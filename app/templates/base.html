@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>{% block title %} {% endblock %}</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.all.min.css') }}"/>
+    <!-- Google Fonts Roboto -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/google-font-roboto.css') }}"/>
+    <!-- MDB -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mdb.min.css') }}" />
+  </head>
+  <body>
+    <!-- Start your project here-->
+    {% block navbar %} {% endblock %}
+    <div class="container">
+      {% block content %} {% endblock %}
+    </div>
+    <!-- End your project here-->
+
+    <!-- MDB -->
+    <script type="text/javascript" src="{{ url_for('static', filename='js/mdb.umd.min.js') }}"></script>
+    <!-- Custom scripts -->
+    <script type="text/javascript"></script>
+  </body>
+</html>
