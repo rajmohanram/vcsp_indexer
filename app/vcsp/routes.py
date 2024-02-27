@@ -1,5 +1,6 @@
 from app.vcsp import bp
 from flask import render_template
+from app.helpers.vcsp.s3reindex import reindex_bucket
 
 @bp.route('/')
 def index():
