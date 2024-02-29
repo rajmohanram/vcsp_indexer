@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %} VCSP Events {% endblock %}
+{% block title %} VCSP LibContents {% endblock %}
 {% block stylesheets %}
   <!-- DataTables -->
   <link rel="stylesheet" href="{{ url_for('static', filename='plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
@@ -14,12 +14,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">VCSP S3 Indexer Events</h1>
-          </div><!-- /.col -->
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <a href="#"><i id="refresh" class="fa-solid fa-arrows-rotate"></i></a>
-            </ol>
+            <h1 class="m-0">VCSP Libray Contents</h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -34,18 +29,26 @@
           <div class="col-lg-12">
             <div class="card">
               <div class="card-body">
-                <table id="events" class="table table-bordered table-hover">
+                <table id="contents" class="table table-bordered table-hover">
                   <thead>
                   <tr>
-                    <th id="eventTime">Event Time</th>
-                    <th id="useid">User Id</th>
-                    <th id="eventName">Event</th>
-                    <th id="bucket">Bucket</th>
-                    <th id="object">Object</th>
-                    <th id="status">Indexing Status</th>
+                    <th>Library</th>
+                    <th>Item Type</th>
+                    <th>Item Name</th>
+                    <th>UID</th>
+                    <th>Created</th>
                   </tr>
                   </thead>
                   <tbody>
+                  {% for content in contents %}
+                  <tr>
+                      <td>{{content[0]}}</td>
+                      <td>{{content[1]}}</td>
+                      <td>{{content[2]}}</td>
+                      <td>{{content[3]}}</td>
+                      <td>{{content[4]}}</td>
+                  </tr>
+                  {% endfor %}
                   </tbody>
                 </table>
               </div>
@@ -71,9 +74,12 @@
 <script src="{{ url_for('static', filename='plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
 <script src="{{ url_for('static', filename='plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
 <script>
-  $(document).ready(function() {
-
-    var table = $('#events').DataTable({
+    $(function () {
+    $("#example1").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    $('#contents').DataTable({
       "paging": true,
       "lengthChange": true,
       "searching": true,
@@ -82,38 +88,6 @@
       "autoWidth": false,
       "responsive": true,
     });
-
-    function getEvents() {
-      // Define the AJAX request
-      $.ajax({
-        url: '/vcsp/getevents',
-        dataType: 'json',
-        success: function(data) {
-          console.log(data)
-          table.clear().draw();
-          table.rows.add(data).draw();
-        },
-        error: function(error) {
-          console.error("Error retrieving data:", error);
-        }
-
-      });
-    }
-
-    // Call the function initially to populate the table
-    getEvents();
-
-    // Start a timer to call the function periodically
-    const intervalId = setInterval(getEvents, 2 * 60 * 1000); // 2 minutes in milliseconds
-
-    // You can optionally clear the interval later using clearInterval(intervalId);
-    // Get the item named 'Refresh'
-    const refreshButton = document.getElementById("refresh");
-
-    // Add click event listener to the button
-    refreshButton.addEventListener("click", getEvents);
-
   });
-
 </script>
 {% endblock %}
